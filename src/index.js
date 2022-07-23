@@ -1,6 +1,5 @@
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
-import * as serviceWorker from './serviceWorker';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import "@fontsource/quicksand";
