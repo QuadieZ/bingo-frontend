@@ -84,7 +84,7 @@ export const Bingo = () => {
 
         axios(configuration)
             .then((result) => {
-                setData(result.data)
+                if (data.length === 0) setData(result.data)
             })
             .catch((error) => {
                 console.error(error)
