@@ -24,7 +24,7 @@ import { CircleIcon } from "../components/CircleIcon"
 import { placeColorToken } from "../theme"
 
 export const BingoItem = (props) => {
-    const { mission, location, image, details } = props
+    const { mission, location, image, details, index } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
     var isCompleted
 
@@ -35,17 +35,25 @@ export const BingoItem = (props) => {
         minH: 0,
         minW: 0,
         borderRadius: 5,
-        border: mission === 'Free!' || isCompleted ? "0px" : ["1px", "2px"],
+        border: isCompleted ? "0px" : ["1px", "2px"],
         borderColor: [placeColorToken[location], placeColorToken[location]],
-        bg: mission === 'Free!' || isCompleted ? 'brand.secondary' : 'bg.light',
-        onClick: mission === 'Free!' || isCompleted ? null : onOpen,
+        bg: isCompleted ? 'brand.secondary' : 'bg.light',
+        onClick: isCompleted ? null : onOpen,
     }
 
     return (
         <>
+            {
+                index === 12 &&
+                <GridItem {...bingoItemStyle} border="0px" bg="brand.secondary" onClick={null}>
+                    <Stack align="center" justify="center" spacing={[0, 2]} h="100%" p={1}>
+                        <Text fontSize={["xs", "lg"]} textAlign="center" lineHeight={["15px", "20px"]} color='content.contrast'>Free!</Text>
+                    </Stack>
+                </GridItem>
+            }
             <GridItem {...bingoItemStyle}>
                 <Stack align="center" justify="center" spacing={[0, 2]} h="100%" p={1}>
-                    <Text fontSize={["xs", "lg"]} textAlign="center" lineHeight={["15px", "20px"]} color={mission === 'Free!' || isCompleted ? 'content.contrast' : 'content.primary'}>{mission}</Text>
+                    <Text fontSize={["xs", "lg"]} textAlign="center" lineHeight={["15px", "20px"]} color={isCompleted ? 'content.contrast' : 'content.primary'}>{mission}</Text>
                 </Stack>
             </GridItem>
 
@@ -73,7 +81,7 @@ const BingoTable = ({ item }) => {
             <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">
                 <Heading pb={[10, 5]}>Cultural Trip</Heading>
                 <Grid templateColumns='repeat(5, 1fr)' templateRows='repeat(5, 1fr)' w={["90vw", "80vh"]} gap={1} h={["90vw", "80vh"]}>
-                    {item.length !== 0 && item.map(el => (<BingoItem {...el} />))}
+                    {item.length !== 0 && item.map((el, i) => (<BingoItem {...el} index={i} />))}
                 </Grid>
                 <Stack pos="absolute" bottom="0" right="0" m={4}>
                     <HStack color={placeColorToken.all}>
