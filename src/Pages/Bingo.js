@@ -66,13 +66,42 @@ export const BingoItem = (props) => {
     )
 }
 
+const BingoTable = ({ item }) => {
+    console.log(item)
+    if (item.length > 0) {
+        return (
+            <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">
+                <Heading pb={[10, 5]}>Cultural Trip</Heading>
+                <Grid templateColumns='repeat(5, 1fr)' templateRows='repeat(5, 1fr)' w={["90vw", "80vh"]} gap={1} h={["90vw", "80vh"]}>
+                    {item.length !== 0 && item.map(el => (<BingoItem {...el} />))}
+                </Grid>
+                <Stack pos="absolute" bottom="0" right="0" m={4}>
+                    <HStack color={placeColorToken.all}>
+                        <CircleIcon /><Text>All Places</Text>
+                    </HStack>
+                    <HStack color={placeColorToken.palace}>
+                        <CircleIcon /><Text >Grand Palace</Text>
+                    </HStack>
+                    <HStack color={placeColorToken.arun}>
+                        <CircleIcon /><Text >Wat Arun</Text>
+                    </HStack>
+                    <HStack color={placeColorToken.po}>
+                        <CircleIcon /><Text >Wat Po</Text>
+                    </HStack>
+                </Stack>
+            </Flex>
+        )
+    }
+
+    return <Flex w="100vw" h="100vh" align="center" justify="center"><Spinner size="xl" color="brand.primary" /></Flex>
+}
+
 export const Bingo = () => {
     const cookies = new Cookies()
     const token = cookies.get("TOKEN")
 
-    const [data, setData] = useState(["test"])
+    const [data, setData] = useState([])
     console.log(data)
-
     useEffect(() => {
         const configuration = {
             method: "get",
@@ -84,37 +113,12 @@ export const Bingo = () => {
 
         axios(configuration)
             .then((result) => {
-                if (data.length === 1) setData(result.data)
+                if (data.length === 0) setData(result.data)
             })
             .catch((error) => {
                 console.error(error)
             });
     }, [token, data])
 
-    if (data.length === 24) setData(prev => prev.splice(12, 0, { mission: "Free!" }))
-
-    if (data.length === 25) return (
-        <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">
-            <Heading pb={[10, 5]}>Cultural Trip</Heading>
-            <Grid templateColumns='repeat(5, 1fr)' templateRows='repeat(5, 1fr)' w={["90vw", "80vh"]} gap={1} h={["90vw", "80vh"]}>
-                {data.length !== 0 && data.map(el => (<BingoItem {...el} />))}
-            </Grid>
-            <Stack pos="absolute" bottom="0" right="0" m={4}>
-                <HStack color={placeColorToken.all}>
-                    <CircleIcon /><Text>All Places</Text>
-                </HStack>
-                <HStack color={placeColorToken.palace}>
-                    <CircleIcon /><Text >Grand Palace</Text>
-                </HStack>
-                <HStack color={placeColorToken.arun}>
-                    <CircleIcon /><Text >Wat Arun</Text>
-                </HStack>
-                <HStack color={placeColorToken.po}>
-                    <CircleIcon /><Text >Wat Po</Text>
-                </HStack>
-            </Stack>
-        </Flex>
-    )
-
-    return <Flex w="100vw" h="100vh" align="center" justify="center"><Spinner size="xl" color="brand.primary" /></Flex>
+    return <BingoTable item={data} />
 }
