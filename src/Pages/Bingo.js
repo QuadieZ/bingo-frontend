@@ -86,7 +86,7 @@ export const Bingo = () => {
                 setData(result.data)
             })
             .catch((error) => {
-                error = new Error();
+                console.error(error)
             });
     }, [token])
 
