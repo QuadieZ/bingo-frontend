@@ -70,9 +70,7 @@ export const Bingo = () => {
     const cookies = new Cookies()
     const token = cookies.get("TOKEN")
 
-    const [data, setData] = useState([])
-    let bingoData = []
-
+    const [data, setData] = useState(["test"])
     console.log(data)
 
     useEffect(() => {
@@ -86,20 +84,20 @@ export const Bingo = () => {
 
         axios(configuration)
             .then((result) => {
-                if (data.length === 0) setData(result.data)
+                if (data.length === 1) setData(result.data)
             })
             .catch((error) => {
                 console.error(error)
             });
     }, [token, data])
 
-    if (data.length === 24) bingoData = data.splice(12, 0, { mission: "Free!" })
+    if (data.length === 24) setData(prev => prev.splice(12, 0, { mission: "Free!" }))
 
     if (data.length === 25) return (
         <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">
             <Heading pb={[10, 5]}>Cultural Trip</Heading>
             <Grid templateColumns='repeat(5, 1fr)' templateRows='repeat(5, 1fr)' w={["90vw", "80vh"]} gap={1} h={["90vw", "80vh"]}>
-                {bingoData.length !== 0 && bingoData.map(el => (<BingoItem {...el} />))}
+                {data.length !== 0 && data.map(el => (<BingoItem {...el} />))}
             </Grid>
             <Stack pos="absolute" bottom="0" right="0" m={4}>
                 <HStack color={placeColorToken.all}>
