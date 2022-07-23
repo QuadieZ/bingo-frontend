@@ -71,6 +71,7 @@ export const Bingo = () => {
     const token = cookies.get("TOKEN")
 
     const [data, setData] = useState([])
+    console.log(data)
 
     useEffect(() => {
         const configuration = {
