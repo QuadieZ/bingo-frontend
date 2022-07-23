@@ -23,5 +23,3 @@ root.render(
   </StrictMode>
 );
 
-serviceWorker.register();
-
