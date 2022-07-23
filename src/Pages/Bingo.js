@@ -89,7 +89,7 @@ export const Bingo = () => {
             .catch((error) => {
                 console.error(error)
             });
-    }, [token])
+    }, [])
 
     if (data.length === 24) setData(prev => prev.splice(12, 0, { mission: "Free!" }))
 
