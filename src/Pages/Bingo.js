@@ -37,11 +37,13 @@ const CameraComponent = () => {
     const [taken, setTaken] = useState(null);
 
     return (
-        <Stack w="full" h="full" align="center" justify="flex-end" pb={4}>
-            <Camera ref={camera} />
-            <Button bg="brand.primary" p={4} size="2xl" borderRadius="full" _hover={{ bg: 'brand.secondary' }}><Image src="/camera.png" boxSize={6} onClick={() => setTaken(camera.current.takePhoto())} /></Button>
-            {taken ?? <Image src={taken} />}
-        </Stack>)
+        <>
+            <Stack w="full" h="full" pos="fixed" top="0" right="0"><Camera ref={camera} /></Stack>
+            <Stack w="full" h="full" align="center" justify="flex-end" pb={4}>
+                <Button bg="brand.primary" p={4} size="2xl" borderRadius="full" _hover={{ bg: 'brand.secondary' }}><Image src="/camera.png" boxSize={6} onClick={() => setTaken(camera.current.takePhoto())} /></Button>
+                {taken ?? <Image src={taken} />}
+            </Stack>
+        </>)
 }
 
 const BingoItem = (props) => {
