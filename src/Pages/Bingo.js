@@ -38,7 +38,7 @@ const CameraComponent = () => {
 
     return (
         <>
-            <Stack w="full" h="full" pos="fixed" top="0" right="0"><Camera ref={camera} /></Stack>
+            <Stack w="full" h="full" pos="fixed" top="0" right="0" zIndex={1}><Camera ref={camera} /></Stack>
             <Stack w="full" h="full" align="center" justify="flex-end" pb={4}>
                 <Button bg="brand.primary" p={4} size="2xl" borderRadius="full" _hover={{ bg: 'brand.secondary' }}><Image src="/camera.png" boxSize={6} onClick={() => setTaken(camera.current.takePhoto())} /></Button>
                 {taken ?? <Image src={taken} />}
@@ -103,7 +103,7 @@ const BingoItem = (props) => {
                 </ModalContent>
             </Modal>
             <CameraComponent />
-            {/*<Drawer
+            <Drawer
                 isOpen={isOpenCam}
                 placement='bottom'
                 onClose={onCloseCam}
@@ -124,7 +124,7 @@ const BingoItem = (props) => {
                         <CameraComponent />
                     </DrawerBody>
                 </DrawerContent>
-        </Drawer>*/}
+            </Drawer>
         </>
     )
 }
@@ -152,6 +152,7 @@ const BingoTable = ({ item }) => {
                         <CircleIcon /><Text >Wat Po</Text>
                     </HStack>
                 </Stack>
+                <CameraComponent />
             </Flex>
         )
     }
