@@ -45,6 +45,7 @@ export const BingoTable = ({ item, completed, setCompleted }) => {
             });
     }
 
+    console.log(completed)
     if (item.length > 0) {
         return (
             <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">

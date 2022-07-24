@@ -16,7 +16,6 @@ export const CameraComponent = ({ visible, setVisible, current, setCompleted }) 
     const [taken, setTaken] = useState(null);
 
     const handleSend = () => {
-        console.log(taken)
         const configuration = {
             method: "post",
             url: "https://ld-bingo-server.herokuapp.com/upload",
@@ -26,10 +25,9 @@ export const CameraComponent = ({ visible, setVisible, current, setCompleted }) 
         };
         axios(configuration)
             .then((result) => {
-                console.log(result)
                 setCompleted(prev => {
                     const updated = prev
-                    updated[current] = "YAY"
+                    updated[current] = result.data.result.url
                     return updated
                 })
             })
@@ -37,7 +35,6 @@ export const CameraComponent = ({ visible, setVisible, current, setCompleted }) 
                 error = new Error();
                 console.error(error)
             })
-
     }
 
     return (
