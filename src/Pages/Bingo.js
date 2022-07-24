@@ -3,7 +3,7 @@ import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { BingoTable } from '../components/Bingo/BingoTable'
 
-export const Bingo = () => {
+export const Bingo = ({ completed, isBingo, setCompleted }) => {
     const cookies = new Cookies()
     const token = cookies.get("TOKEN")
 
@@ -27,5 +27,5 @@ export const Bingo = () => {
             });
     }, [token, data])
 
-    return <BingoTable item={data} />
+    return <BingoTable item={data} completed={completed} setCompleted={setCompleted} />
 }

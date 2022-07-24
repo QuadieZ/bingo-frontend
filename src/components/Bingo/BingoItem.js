@@ -17,10 +17,18 @@ import {
 import { placeColorToken } from "../../theme"
 
 export const BingoItem = (props) => {
-    const { mission, location, image, details, index, setVisible } = props
+    const { mission, location, image, details, index, setVisible, setCurrent, isCompleted } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    var isCompleted
+    const handleOpen = () => {
+        onOpen()
+        setCurrent(index)
+    }
+
+    const handleClose = () => {
+        onClose()
+        setCurrent("")
+    }
 
     const bingoItemStyle = {
         colSpan: 1,
@@ -32,7 +40,7 @@ export const BingoItem = (props) => {
         border: isCompleted ? "0px" : ["1px", "2px"],
         borderColor: [placeColorToken[location], placeColorToken[location]],
         bg: isCompleted ? 'brand.secondary' : 'bg.light',
-        onClick: isCompleted ? null : onOpen,
+        onClick: isCompleted ? null : handleOpen,
     }
 
     return (
@@ -51,7 +59,7 @@ export const BingoItem = (props) => {
                 </Stack>
             </GridItem>
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <Modal isOpen={isOpen} onClose={handleClose} isCentered>
                 <ModalOverlay />
                 <ModalContent mx={5}>
                     <ModalHeader>{mission}</ModalHeader>

@@ -5,10 +5,9 @@ import { FormErrorMessage } from "@chakra-ui/react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+export const Home = ({ setCompleted, setIsBingo }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [login, setLogin] = useState(false);
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
@@ -26,13 +25,14 @@ export const Home = () => {
         };
         axios(configuration)
             .then((result) => {
-                setLogin(true)
                 setError(false)
+                setCompleted(result.data.completed)
+                setIsBingo(result.data.isBingo)
                 cookies.set("TOKEN", result.data.token, {
                     path: "/"
                 })
+                cookies.set("USERNAME", username)
                 navigate("/bingo")
-
             })
             .catch((error) => {
                 error = new Error();
