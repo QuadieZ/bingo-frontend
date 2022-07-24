@@ -26,29 +26,31 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
+    Box
 } from "@chakra-ui/react"
 import { CircleIcon } from "../components/CircleIcon"
 import { placeColorToken } from "../theme"
 import { Button } from '@chakra-ui/react'
 import { Camera } from "react-camera-pro"
 
-const CameraComponent = () => {
+const CameraComponent = ({ visible }) => {
     const camera = useRef(null);
     const [taken, setTaken] = useState(null);
 
     return (
-        <>
-            <Stack w="full" h="full" pos="fixed" top="0" right="0" zIndex={1}><Camera ref={camera} /></Stack>
-            <Stack w="full" h="full" align="center" justify="flex-end" pb={4}>
+        <Box display={visible ? 'box' : 'none'} zIndex={9999}>
+            <Stack w="full" h="full" pos="fixed" top="0" right="0"><Camera ref={camera} /></Stack>
+            <Stack w="full" h="full" pos="fixed" top="0" right="0" align="center" justify="flex-end" pb={4}>
                 <Button bg="brand.primary" p={4} size="2xl" borderRadius="full" _hover={{ bg: 'brand.secondary' }}><Image src="/camera.png" boxSize={6} onClick={() => setTaken(camera.current.takePhoto())} /></Button>
                 {taken ?? <Image src={taken} />}
             </Stack>
-        </>)
+        </Box >)
 }
 
 const BingoItem = (props) => {
     const { mission, location, image, details, index } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [visible, setVisible] = useState(false)
 
     const btnRef = useRef()
     const { isOpen: isOpenCam, onOpen: onOpenCam, onClose: onCloseCam } = useDisclosure()
@@ -98,33 +100,12 @@ const BingoItem = (props) => {
                         {image && <Image src={image} mb={2} />}
                     </ModalBody>
                     <ModalFooter>
-                        <Button leftIcon={<Image src="/camera.png" boxSize={6} />} bgColor="brand.primary" color="content.contrast" ref={btnRef} onClick={onOpenCam}>Take a picture</Button>
+                        <Button leftIcon={<Image src="/camera.png" boxSize={6} />} bgColor="brand.primary" color="content.contrast" ref={btnRef} onClick={() => setVisible(true)}>Take a picture</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <CameraComponent />
-            <Drawer
-                isOpen={isOpenCam}
-                placement='bottom'
-                onClose={onCloseCam}
-                isFullHeight
-                finalFocusRef={btnRef}
-            >
-                <DrawerContent>
-                    <DrawerHeader>
-                        <HStack w="100%" justify="space-between">
-                            <Text>Loading Camera...</Text>
-                            <Button onClick={onCloseCam} bgColor="bg.light" zIndex={100}>
-                                Close Camera
-                            </Button>
-                        </HStack>
-                    </DrawerHeader>
+            <CameraComponent visible={visible} />
 
-                    <DrawerBody>
-                        <CameraComponent />
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
         </>
     )
 }
@@ -152,7 +133,6 @@ const BingoTable = ({ item }) => {
                         <CircleIcon /><Text >Wat Po</Text>
                     </HStack>
                 </Stack>
-                <CameraComponent />
             </Flex>
         )
     }
