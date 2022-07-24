@@ -57,7 +57,7 @@ export const BingoItem = (props) => {
                 </Stack>
             </GridItem>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent mx={5}>
                     <ModalHeader>{mission}</ModalHeader>

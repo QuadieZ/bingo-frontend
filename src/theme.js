@@ -25,7 +25,7 @@ export const theme = extendTheme({
             primary: '#303030',
             contrast: '#F6F6F6',
             yellow: '#F4BB29',
-            orange: '#FFB562',
+            orange: '#ED9121',
             red: '#F87474'
         }
     },
