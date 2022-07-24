@@ -100,8 +100,8 @@ const BingoItem = (props) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
-            <Drawer
+            <CameraComponent />
+            {/*<Drawer
                 isOpen={isOpenCam}
                 placement='bottom'
                 onClose={onCloseCam}
@@ -122,7 +122,7 @@ const BingoItem = (props) => {
                         <CameraComponent />
                     </DrawerBody>
                 </DrawerContent>
-            </Drawer>
+        </Drawer>*/}
         </>
     )
 }
