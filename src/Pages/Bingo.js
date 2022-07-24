@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useDisclosure } from "@chakra-ui/react"
@@ -18,14 +18,39 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Spinner
+    Spinner,
+    Drawer,
+    DrawerBody,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
 } from "@chakra-ui/react"
 import { CircleIcon } from "../components/CircleIcon"
 import { placeColorToken } from "../theme"
+import { Button } from '@chakra-ui/react'
+import { Camera } from "react-camera-pro"
 
-export const BingoItem = (props) => {
+const CameraComponent = () => {
+    const camera = useRef(null);
+    const [taken, setTaken] = useState(null);
+
+    return (
+        <Stack w="full" h="full" align="center" justify="flex-end" pb={4}>
+            <Camera ref={camera} />
+            <Button bg="brand.primary" p={4} size="2xl" borderRadius="full" _hover={{ bg: 'brand.secondary' }}><Image src="/camera.png" boxSize={6} onClick={() => setTaken(camera.current.takePhoto())} /></Button>
+            {taken ?? <Image src={taken} />}
+        </Stack>)
+}
+
+const BingoItem = (props) => {
     const { mission, location, image, details, index } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const btnRef = useRef()
+    const { isOpen: isOpenCam, onOpen: onOpenCam, onClose: onCloseCam } = useDisclosure()
+
     var isCompleted
 
     const bingoItemStyle = {
@@ -57,6 +82,8 @@ export const BingoItem = (props) => {
                 </Stack>
             </GridItem>
 
+
+
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent mx={5}>
@@ -68,8 +95,34 @@ export const BingoItem = (props) => {
                         </Text>
                         {image && <Image src={image} mb={2} />}
                     </ModalBody>
+                    <ModalFooter>
+                        <Button leftIcon={<Image src="/camera.png" boxSize={6} />} bgColor="brand.primary" color="content.contrast" ref={btnRef} onClick={onOpenCam}>Take a picture</Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
+
+            <Drawer
+                isOpen={isOpenCam}
+                placement='bottom'
+                onClose={onCloseCam}
+                isFullHeight
+                finalFocusRef={btnRef}
+            >
+                <DrawerContent>
+                    <DrawerHeader>
+                        <HStack w="100%" justify="space-between">
+                            <Text>Loading Camera...</Text>
+                            <Button onClick={onCloseCam} bgColor="bg.light" zIndex={100}>
+                                Close Camera
+                            </Button>
+                        </HStack>
+                    </DrawerHeader>
+
+                    <DrawerBody>
+                        <CameraComponent />
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }
