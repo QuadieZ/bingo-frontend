@@ -48,9 +48,8 @@ const CameraComponent = ({ visible }) => {
 }
 
 const BingoItem = (props) => {
-    const { mission, location, image, details, index } = props
+    const { mission, location, image, details, index, setVisible } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [visible, setVisible] = useState(false)
 
     const btnRef = useRef()
     const { isOpen: isOpenCam, onOpen: onOpenCam, onClose: onCloseCam } = useDisclosure()
@@ -104,7 +103,7 @@ const BingoItem = (props) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <CameraComponent visible={visible} />
+
 
         </>
     )
@@ -112,12 +111,13 @@ const BingoItem = (props) => {
 
 const BingoTable = ({ item }) => {
     console.log(item)
+    const [visible, setVisible] = useState(false)
     if (item.length > 0) {
         return (
             <Flex w="100vw" h="100vh" bgColor="bg.light" align="center" justify="center" pb={[20, 0]} flexDir="column">
                 <Heading pb={[10, 5]}>Cultural Trip</Heading>
                 <Grid templateColumns='repeat(5, 1fr)' templateRows='repeat(5, 1fr)' w={["90vw", "80vh"]} gap={1} h={["90vw", "80vh"]}>
-                    {item.length !== 0 && item.map((el, i) => (<BingoItem {...el} index={i} />))}
+                    {item.length !== 0 && item.map((el, i) => (<BingoItem {...el} index={i} setVisible={setVisible} />))}
                 </Grid>
                 <Stack pos="absolute" bottom="0" right="0" m={4}>
                     <HStack color={placeColorToken.all}>
@@ -133,6 +133,7 @@ const BingoTable = ({ item }) => {
                         <CircleIcon /><Text >Wat Po</Text>
                     </HStack>
                 </Stack>
+                <CameraComponent visible={visible} />
             </Flex>
         )
     }
