@@ -9,6 +9,13 @@ import {
     Heading,
     Spinner,
     Image,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
 } from "@chakra-ui/react"
 import { placeColorToken } from "../../theme"
 import { CircleIcon } from "../CircleIcon"
@@ -17,11 +24,13 @@ import { BingoItem } from "./BingoItem"
 import Cookies from "universal-cookie"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useDisclosure } from "@chakra-ui/react"
 
 export const BingoTable = ({ item, completed, setCompleted }) => {
     const [visible, setVisible] = useState(false)
     const [current, setCurrent] = useState("")
     const [sent, setSent] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate()
 
     const cookies = new Cookies()
@@ -56,7 +65,10 @@ export const BingoTable = ({ item, completed, setCompleted }) => {
                     {item.length !== 0 && item.map((el, i) => (<BingoItem {...el} index={i} key={i} setVisible={setVisible} setCurrent={setCurrent} completed={completed} sent={sent} setSent={setSent} />))}
                 </Grid>
                 <HStack pos="absolute" bottom="0" w="full" p={4} justify="space-between" align="flex-end">
-                    <Image src="/gallery.png" boxSize={6} onClick={() => { navigate("/gallery") }} />
+                    <HStack gap={2}>
+                        <Image src="/gallery.png" boxSize={6} onClick={() => { navigate("/gallery") }} />
+                        <Image src="/pattern.png" boxSize={6} onClick={onOpen} />
+                    </HStack>
                     <Stack>
                         <HStack color={placeColorToken.all}>
                             <CircleIcon /><Text>All Places</Text>
@@ -73,6 +85,20 @@ export const BingoTable = ({ item, completed, setCompleted }) => {
                     </Stack>
                 </HStack>
                 <CameraComponent visible={visible} setVisible={setVisible} current={current} setCompleted={setCompleted} sent={sent} setSent={setSent} />
+                <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                    <ModalOverlay />
+                    <ModalContent mx={4}>
+                        <ModalHeader>Bingo Pattern</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Image src="/bingo_pattern.png" />
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Text>Bingo can be any line. Capture and send to line group when you have a bingo!</Text>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
             </Flex>
         )
     }
