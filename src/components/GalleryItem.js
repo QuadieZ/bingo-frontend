@@ -24,7 +24,7 @@ export const GalleryItem = ({ image, mission, user }) => {
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent mx={4}>
                     <ModalCloseButton />
                     <ModalBody pt={10} pb={8}>
                         <Stack >
@@ -32,7 +32,7 @@ export const GalleryItem = ({ image, mission, user }) => {
                                 <Text size={["xs", "md"]} textOverflow="ellipsis" whiteSpace="nowrap" overflow="hidden">{mission}</Text>
                                 <Text >{user}</Text>
                             </HStack>
-                            <Image src={image} h="70vh" objectFit="contain" />
+                            <Image src={image} h="60vh" objectFit="contain" />
                         </Stack>
                     </ModalBody>
                 </ModalContent>
