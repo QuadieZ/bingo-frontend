@@ -55,9 +55,9 @@ export const Gallery = () => {
             <Flex pos="absolute" top="0" w="full" p={4} justify="space-between" align="flex-end">
                 <Image src="/bingo.png" boxSize={6} onClick={() => { navigate("/bingo") }} />
             </Flex>
-            <Flex px={6} py={10} flexDir="column" align="center" gap={4}>
+            <Flex px={6} py={10} flexDir="column" align="center" gap={4} justify="center">
                 <Heading>Gallery</Heading>
-                <Flex flexDir={["column", "column", "row"]} flexWrap="wrap" gap={4} align="center" justify="center">
+                <Flex flexDir={["column", "column", "row"]} flexWrap="wrap" gap={4} align="center" justify="flex-start" w="80vw">
                     {data.map(user => {
                         return (
                             user.completed.map((el, i) => {
