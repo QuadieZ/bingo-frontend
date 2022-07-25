@@ -10,12 +10,17 @@ import {
     Box
 } from "@chakra-ui/react"
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
-export const CameraComponent = ({ visible, setVisible, current, setCompleted }) => {
+export const CameraComponent = ({ visible, setVisible, current, setCompleted, sent, setSent }) => {
     const camera = useRef(null);
+    const cookies = new Cookies()
+    const username = cookies.get("USERNAME")
+    const token = cookies.get("TOKEN")
     const [taken, setTaken] = useState(null);
 
     const handleSend = () => {
+        let updatedData
         const configuration = {
             method: "post",
             url: "https://ld-bingo-server.herokuapp.com/upload",
@@ -28,8 +33,21 @@ export const CameraComponent = ({ visible, setVisible, current, setCompleted }) 
                 setCompleted(prev => {
                     const updated = prev
                     updated[current] = result.data.result.url
+                    updatedData = updated
                     return updated
                 })
+                setSent(true)
+                setTaken(null)
+
+                axios.put('https://ld-bingo-server.herokuapp.com/data', {
+                    username: username,
+                    updated: updatedData
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                    .then((res) => console.log(res))
             })
             .catch((error) => {
                 error = new Error();
@@ -38,7 +56,7 @@ export const CameraComponent = ({ visible, setVisible, current, setCompleted }) 
     }
 
     return (
-        <Box display={visible ? 'box' : 'none'} zIndex={9999}>
+        <Box display={visible && !sent ? 'box' : 'none'} zIndex={9999}>
             <Stack w="full" h="full" pos="fixed" top="0" right="0">
                 <Camera ref={camera} facingMode="environment" />
             </Stack>

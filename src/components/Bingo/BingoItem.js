@@ -17,8 +17,10 @@ import {
 import { placeColorToken } from "../../theme"
 
 export const BingoItem = (props) => {
-    const { mission, location, image, details, index, setVisible, setCurrent, isCompleted } = props
+    const { mission, location, image, details, index, setVisible, setCurrent, completed, sent, setSent } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const isCompleted = completed[index] !== ""
 
     const handleOpen = () => {
         onOpen()
@@ -28,6 +30,8 @@ export const BingoItem = (props) => {
     const handleClose = () => {
         onClose()
         setCurrent("")
+        setSent(false)
+        setVisible(false)
     }
 
     const bingoItemStyle = {
@@ -71,12 +75,10 @@ export const BingoItem = (props) => {
                         {image && <Image src={image} mb={2} />}
                     </ModalBody>
                     <ModalFooter>
-                        <Button leftIcon={<Image src="/camera.png" boxSize={6} />} bgColor="brand.primary" color="content.contrast" onClick={() => setVisible(true)}>Take a picture</Button>
+                        <Button leftIcon={<Image src="/camera.png" boxSize={6} />} bgColor="brand.primary" color="content.contrast" onClick={() => setVisible(true)} isDisabled={sent} _hover={{ bgColor: 'brand.secondary' }}>Take a picture</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
-
         </>
     )
 }
